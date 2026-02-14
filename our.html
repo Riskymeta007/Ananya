@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Our Pictures</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      background: #000000;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 40px 20px;
+      overflow-x: hidden;
+      position: relative;
+    }
+    
+    /* Falling diamonds background */
+    .falling-hearts {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+    
+    .heart {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      top: -50px;
+      animation: fall-heart linear infinite;
+      opacity: 0.8;
+      background: linear-gradient(135deg, #00d4ff 0%, #00ffff 50%, #ffffff 100%);
+      transform: rotate(45deg);
+      box-shadow: 0 0 20px rgba(0, 212, 255, 0.6);
+    }
+    
+    .heart::before,
+    .heart::after {
+      content: '';
+      position: absolute;
+      background: linear-gradient(135deg, #00d4ff 0%, #00ffff 50%, #ffffff 100%);
+    }
+    
+    .heart::before {
+      width: 0;
+      height: 0;
+      border-left: 15px solid transparent;
+      border-right: 15px solid transparent;
+      border-bottom: 15px solid #00d4ff;
+      top: -15px;
+      left: 0;
+      box-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
+    }
+    
+    .heart::after {
+      width: 0;
+      height: 0;
+      border-left: 15px solid transparent;
+      border-right: 15px solid transparent;
+      border-top: 15px solid #00ffff;
+      bottom: -15px;
+      left: 0;
+      box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+    }
+    
+    @keyframes fall-heart {
+      0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0;
+      }
+      10% {
+        opacity: 0.7;
+      }
+      90% {
+        opacity: 0.7;
+      }
+      100% {
+        transform: translateY(110vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+    
+    .content {
+      position: relative;
+      z-index: 100;
+      width: 100%;
+      max-width: 1200px;
+    }
+    
+    #picturequestion {
+      font-size: 2.2rem;
+      font-weight: bold;
+      color: #00ffff;
+      text-align: center;
+      margin-bottom: 50px;
+      text-shadow: 0 0 10px rgba(0, 255, 255, 0.8), 2px 2px 4px rgba(0, 0, 0, 0.5);
+      animation: pulse 2s ease-in-out infinite;
+      line-height: 1.5;
+      background: rgba(20, 20, 20, 0.95);
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 8px 25px rgba(0, 212, 255, 0.3), 0 0 40px rgba(0, 255, 255, 0.2);
+      border: 4px solid #00d4ff;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.02); }
+    }
+    
+    .pictures-selection {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+      margin-bottom: 40px;
+    }
+    
+    .picture-item {
+      background: rgba(20, 20, 20, 0.95);
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 8px 25px rgba(0, 212, 255, 0.2);
+      transition: all 0.3s ease;
+      cursor: pointer;
+      border: 3px solid #333;
+      text-align: center;
+    }
+    
+    .picture-item:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 12px 35px rgba(0, 255, 255, 0.4), 0 0 30px rgba(0, 212, 255, 0.3);
+      border-color: #00d4ff;
+    }
+    
+    .picture-item.selected {
+      border-color: #00ffff;
+      background: rgba(0, 212, 255, 0.1);
+      box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+    }
+    
+    .picture-image {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+      border-radius: 15px;
+      margin-bottom: 15px;
+      background: #1a1a1a;
+      border: 2px solid #333;
+    }
+    
+    .picture-label {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #00ffff;
+      text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+    }
+    
+    .button {
+      display: block;
+      margin: 20px auto 0;
+      font-size: 1.5rem;
+      font-weight: bold;
+      padding: 15px 50px;
+      border: none;
+      border-radius: 50px;
+      background: linear-gradient(135deg, #00d4ff, #00ffff);
+      color: #000;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0, 212, 255, 0.4), 0 0 20px rgba(0, 255, 255, 0.3);
+    }
+    
+    .button:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 20px rgba(0, 212, 255, 0.6), 0 0 30px rgba(0, 255, 255, 0.5);
+    }
+    
+    .button:active {
+      transform: scale(1.05);
+    }
+    
+    /* Popup Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.6);
+      animation: fadeIn 0.3s;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    .modal-content {
+      background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%);
+      margin: 15% auto;
+      padding: 40px;
+      border: 5px solid #00d4ff;
+      border-radius: 30px;
+      width: 80%;
+      max-width: 600px;
+      text-align: center;
+      box-shadow: 0 10px 40px rgba(0, 212, 255, 0.4), 0 0 50px rgba(0, 255, 255, 0.3);
+      animation: slideIn 0.3s;
+      position: relative;
+    }
+    
+    @keyframes slideIn {
+      from {
+        transform: translateY(-50px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+    
+    .modal-message {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: #00ffff;
+      margin-bottom: 20px;
+      text-shadow: 0 0 10px rgba(0, 255, 255, 0.8), 1px 1px 2px rgba(0, 0, 0, 0.5);
+      line-height: 1.5;
+    }
+    
+    .close-button {
+      background: linear-gradient(135deg, #00d4ff, #00ffff);
+      color: #000;
+      padding: 12px 30px;
+      border: none;
+      border-radius: 25px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
+    }
+    
+    .close-button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 15px rgba(0, 212, 255, 0.6), 0 0 20px rgba(0, 255, 255, 0.5);
+    }
+    
+    @media (max-width: 768px) {
+      #picturequestion {
+        font-size: 1.6rem;
+        padding: 20px;
+      }
+      
+      .pictures-selection {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+      }
+      
+      .picture-image {
+        height: 180px;
+      }
+      
+      .picture-label {
+        font-size: 1rem;
+      }
+      
+      .button {
+        font-size: 1.2rem;
+        padding: 12px 40px;
+      }
+      
+      .modal-content {
+        width: 90%;
+        padding: 30px;
+      }
+      
+      .modal-message {
+        font-size: 1.4rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="falling-hearts" id="fallingHearts"></div>
+  
+  <div class="content">
+    <div id="picturequestion">
+      <b>Tell me which is the picture I like the most of ours 💕📸</b>
+    </div>
+    <div class="pictures-selection">
+      <div class="picture-item" onclick="selectPicture(1)">
+        <img src="our_pictures/picture1.jpg" alt="Our Picture 1" class="picture-image" />
+        <div class="picture-label">Picture 1</div>
+      </div>
+      <div class="picture-item" onclick="selectPicture(2)">
+        <img src="our_pictures/picture2.jpg" alt="Our Picture 2" class="picture-image" />
+        <div class="picture-label">Picture 2</div>
+      </div>
+      <div class="picture-item" onclick="selectPicture(3)">
+        <img src="our_pictures/picture3.jpg" alt="Our Picture 3" class="picture-image" />
+        <div class="picture-label">Picture 3</div>
+      </div>
+      <div class="picture-item" onclick="selectPicture(4)">
+        <img src="our_pictures/picture4.jpg" alt="Our Picture 4" class="picture-image" />
+        <div class="picture-label">Picture 4</div>
+      </div>
+      <div class="picture-item" onclick="selectPicture(5)">
+        <img src="our_pictures/picture5.jpg" alt="Our Picture 5" class="picture-image" />
+        <div class="picture-label">Picture 5</div>
+      </div>
+      <div class="picture-item" onclick="selectPicture(6)">
+        <img src="our_pictures/picture6.jpg" alt="Our Picture 6" class="picture-image" />
+        <div class="picture-label">Picture 6</div>
+      </div>
+    </div>
+    <button class="button" onclick="submitPicture()">Continue 💖</button>
+  </div>
+  
+  <!-- Popup Modal -->
+  <div id="messageModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-message" id="modalMessage"></div>
+      <button class="close-button" onclick="closeModal()">OK</button>
+    </div>
+  </div>
+  
+  <script>
+    let selectedPicture = null;
+    
+    // Create falling hearts
+    const container = document.getElementById('fallingHearts');
+    const numHearts = 40;
+    
+    for (let i = 0; i < numHearts; i++) {
+      const heart = document.createElement('div');
+      heart.className = 'heart';
+      
+      const leftPos = Math.random() * 100;
+      const duration = 5 + Math.random() * 5;
+      const delay = Math.random() * 5;
+      const scale = 0.5 + Math.random() * 0.8;
+      
+      heart.style.left = `${leftPos}%`;
+      heart.style.animationDuration = `${duration}s`;
+      heart.style.animationDelay = `${delay}s`;
+      heart.style.transform = `scale(${scale})`;
+      heart.style.filter = `hue-rotate(${Math.random() * 30}deg)`;
+      
+      container.appendChild(heart);
+    }
+    
+    function selectPicture(num) {
+      // Remove previous selection
+      document.querySelectorAll('.picture-item').forEach(item => {
+        item.classList.remove('selected');
+      });
+      
+      // Add selection to clicked item
+      event.currentTarget.classList.add('selected');
+      selectedPicture = num;
+    }
+    
+    function submitPicture() {
+      if (selectedPicture === null) {
+        showModal("Please select a picture first! 💕");
+        return;
+      }
+      
+      // You can customize messages for each picture here
+      let message = `You selected Picture ${selectedPicture}! 😊💕`;
+      
+      showModal(message);
+    }
+    
+    function showModal(message) {
+      document.getElementById('modalMessage').textContent = message;
+      document.getElementById('messageModal').style.display = 'block';
+    }
+    
+    function closeModal() {
+      document.getElementById('messageModal').style.display = 'none';
+    }
+    
+    // Close modal when clicking outside of it
+    window.onclick = function(event) {
+      const modal = document.getElementById('messageModal');
+      if (event.target === modal) {
+        closeModal();
+      }
+    }
+  </script>
+</body>
+</html>
