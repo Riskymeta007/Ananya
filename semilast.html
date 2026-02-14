@@ -479,7 +479,78 @@
       
       setTimeout(function() {
         document.getElementById('promiseMessage').classList.add('show');
+        
+        // After 10 seconds, show teaser and redirect
+        setTimeout(function() {
+          document.getElementById('promiseMessage').classList.remove('show');
+          
+          setTimeout(function() {
+            showTeaserMessage();
+          }, 500);
+        }, 10000);
       }, 500);
+    }
+    
+    // Show teaser message before redirect
+    function showTeaserMessage() {
+      const teaserDiv = document.createElement('div');
+      teaserDiv.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.95);
+        z-index: 4000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        animation: fadeIn 0.5s ease;
+      `;
+      
+      teaserDiv.innerHTML = `
+        <div style="
+          background: linear-gradient(135deg, #fff5f7 0%, #ffe4e9 100%);
+          padding: 60px 50px;
+          border-radius: 30px;
+          text-align: center;
+          box-shadow: 0 10px 50px rgba(255, 107, 157, 0.7);
+          border: 6px solid #ff1744;
+          max-width: 700px;
+          width: 90%;
+          animation: popIn 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        ">
+          <h2 style="
+            color: #ff1744;
+            font-size: 2.8rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            line-height: 1.4;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-weight: bold;
+          ">You think that's it? 😏</h2>
+          <p style="
+            font-size: 2rem;
+            color: #ff1744;
+            font-weight: bold;
+            margin: 20px 0;
+          ">Very Bad of you! 😤</p>
+          <p style="
+            font-size: 1.5rem;
+            color: #ff6b9d;
+            font-weight: 600;
+            font-style: italic;
+          ">Inka undhi... 💕</p>
+          <div style="font-size: 5rem; margin: 20px 0;">😼</div>
+        </div>
+      `;
+      
+      document.body.appendChild(teaserDiv);
+      
+      // Redirect after 3 seconds
+      setTimeout(function() {
+        window.location.href = 'next-page.html'; // Change this to your next page
+      }, 3000);
     }
   </script>
 </body>
