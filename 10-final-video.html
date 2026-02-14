@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>For You</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      background: linear-gradient(135deg, #1a0000, #330000);
+      font-family: 'Segoe UI', sans-serif;
+      color: #fff;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+    
+    .hearts {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 1;
+    }
+    
+    .heart {
+      position: absolute;
+      font-size: 20px;
+      color: #ff3366;
+      opacity: 0.6;
+      animation: float 10s linear infinite;
+    }
+    
+    @keyframes float {
+      0% {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 0;
+      }
+      10% {
+        opacity: 0.6;
+      }
+      90% {
+        opacity: 0.6;
+      }
+      100% {
+        transform: translateY(-100px) rotate(360deg);
+        opacity: 0;
+      }
+    }
+    
+    .first-popup {
+      display: flex;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.95);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .first-popup.hide {
+      display: none !important;
+    }
+    
+    .popup-content {
+      background: linear-gradient(135deg, #1a0000, #330000);
+      padding: 60px 40px;
+      border-radius: 30px;
+      text-align: center;
+      border: 4px solid #ff3366;
+      max-width: 90%;
+      max-width: 700px;
+      animation: popupBounce 0.6s ease;
+    }
+    
+    .popup-content h2 {
+      color: #ff3366;
+      font-size: 2.8rem;
+      margin-bottom: 30px;
+      text-shadow: 0 0 20px rgba(255, 51, 102, 0.8);
+      line-height: 1.4;
+    }
+    
+    .popup-content p {
+      color: #ffccdd;
+      font-size: 1.8rem;
+      line-height: 1.8;
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+    
+    @keyframes popupBounce {
+      0% { transform: scale(0); opacity: 0; }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    
+    .button {
+      background: linear-gradient(135deg, #ff3366, #cc0033);
+      color: white;
+      border: none;
+      padding: 18px 45px;
+      font-size: 1.3rem;
+      font-weight: bold;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 5px 20px rgba(255, 51, 102, 0.4);
+      transition: all 0.3s ease;
+      margin-top: 30px;
+    }
+    
+    .button:hover {
+      background: linear-gradient(135deg, #ff4477, #dd0044);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(255, 51, 102, 0.6);
+    }
+    
+    .button:active {
+      transform: translateY(0);
+    }
+    
+    .video-container {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #000;
+      z-index: 10000;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .video-container.show {
+      display: flex !important;
+    }
+    
+    #finalVideo {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    
+    .close-video-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      background: rgba(255, 51, 102, 0.9);
+      border: none;
+      border-radius: 50%;
+      color: white;
+      font-size: 1.5rem;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+      transition: all 0.3s ease;
+      z-index: 10001;
+    }
+    
+    .close-video-btn:hover {
+      background: #ff3366;
+      transform: scale(1.1);
+    }
+    
+    .final-popup {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.95);
+      z-index: 11000;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .final-popup.show {
+      display: flex !important;
+    }
+    
+    .final-popup-content {
+      background: linear-gradient(135deg, #1a0000, #330000);
+      padding: 60px 40px;
+      border-radius: 30px;
+      text-align: center;
+      border: 5px solid #ff3366;
+      max-width: 90%;
+      max-width: 800px;
+      animation: popupBounce 0.6s ease;
+      box-shadow: 0 0 50px rgba(255, 51, 102, 0.5);
+    }
+    
+    .final-popup-content h2 {
+      color: #ff3366;
+      font-size: 2.5rem;
+      margin-bottom: 30px;
+      text-shadow: 0 0 20px rgba(255, 51, 102, 0.8);
+      line-height: 1.5;
+    }
+    
+    .heart-emoji {
+      font-size: 4rem;
+      margin: 20px 0;
+      animation: heartbeat 1.5s ease-in-out infinite;
+    }
+    
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      10% { transform: scale(1.1); }
+      20% { transform: scale(1); }
+      30% { transform: scale(1.1); }
+      40% { transform: scale(1); }
+    }
+    
+    @media (max-width: 768px) {
+      .popup-content {
+        padding: 40px 25px;
+      }
+      
+      .popup-content h2 {
+        font-size: 2rem;
+      }
+      
+      .popup-content p {
+        font-size: 1.3rem;
+      }
+      
+      .final-popup-content {
+        padding: 40px 25px;
+      }
+      
+      .final-popup-content h2 {
+        font-size: 1.8rem;
+      }
+      
+      .close-video-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+        top: 15px;
+        right: 15px;
+      }
+      
+      .button {
+        font-size: 1.1rem;
+        padding: 15px 35px;
+      }
+    }
+  </style>
+</head>
+<body>
+  
+  <div class="hearts" id="hearts"></div>
+  
+  <div class="first-popup" id="firstPopup">
+    <div class="popup-content">
+      <h2>I know I miss you too 💕</h2>
+      <p>Sooo here you go...</p>
+      <button class="button" onclick="playVideo()">
+        Watch 🎬
+      </button>
+    </div>
+  </div>
+  
+  <div class="video-container" id="videoContainer">
+    <video id="finalVideo" playsinline muted>
+      <source src="food/final-video.mp4" type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
+    <audio id="customAudio">
+      <source src="food/final-audio.mp3" type="audio/mpeg" />
+    </audio>
+    <button class="close-video-btn" onclick="closeVideo()">✕</button>
+  </div>
+  
+  <div class="final-popup" id="finalPopup">
+    <div class="final-popup-content">
+      <h2>
+        No matter what...<br>
+        Even when I'm not well, you are not well,<br>
+        Even when terms within us is not good,<br>
+        When on death bed...<br><br>
+        JUST CALL ME IF YOU ARE IN TROUBLE,<br>
+        I'LL BE THERE NO MATTER WHAT
+      </h2>
+      <div class="heart-emoji">💕</div>
+    </div>
+  </div>
+  
+  <script>
+    function createHearts() {
+      const container = document.getElementById('hearts');
+      for (let i = 0; i < 30; i++) {
+        const heart = document.createElement('div');
+        heart.className = 'heart';
+        heart.innerHTML = '❤️';
+        heart.style.left = Math.random() * 100 + '%';
+        heart.style.animationDelay = Math.random() * 5 + 's';
+        heart.style.animationDuration = (8 + Math.random() * 4) + 's';
+        container.appendChild(heart);
+      }
+    }
+    
+    createHearts();
+    
+    function playVideo() {
+      const firstPopup = document.getElementById('firstPopup');
+      const videoContainer = document.getElementById('videoContainer');
+      const video = document.getElementById('finalVideo');
+      const audio = document.getElementById('customAudio');
+      
+      firstPopup.classList.add('hide');
+      
+      videoContainer.classList.add('show');
+      
+      video.play().catch(err => console.log('Video play error:', err));
+      
+      audio.play().catch(err => console.log('Audio play error:', err));
+      
+      video.addEventListener('ended', function() {
+        videoContainer.classList.remove('show');
+        video.pause();
+        audio.pause();
+        
+        setTimeout(function() {
+          document.getElementById('finalPopup').classList.add('show');
+        }, 500);
+      });
+    }
+    
+    function closeVideo() {
+      const videoContainer = document.getElementById('videoContainer');
+      const video = document.getElementById('finalVideo');
+      const audio = document.getElementById('customAudio');
+      
+      video.pause();
+      video.currentTime = 0;
+      audio.pause();
+      audio.currentTime = 0;
+      
+      videoContainer.classList.remove('show');
+      
+      setTimeout(function() {
+        document.getElementById('finalPopup').classList.add('show');
+      }, 500);
+    }
+  </script>
+</body>
+</html>
