@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Memory Quiz</title>
+  <title>Picture Selection</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     
     body {
-      background: linear-gradient(135deg, #4a148c 0%, #6a1b9a 50%, #8e24aa 100%);
+      background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 50%, #ffeaa7 100%);
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       display: flex;
       flex-direction: column;
@@ -20,67 +20,88 @@
       position: relative;
     }
     
-    body::before {
-      content: '';
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background-image: 
-        repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,255,255,.05) 35px, rgba(255,255,255,.05) 70px);
-      z-index: 1;
-    }
-    
-    .falling-hearts {
+    .falling-paws {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
       pointer-events: none;
-      z-index: 2;
+      z-index: 1;
     }
     
-    .heart {
+    .paw {
       position: absolute;
-      width: 30px;
-      height: 30px;
-      top: -50px;
-      animation: fall-heart linear infinite;
-      opacity: 0.8;
+      width: 40px;
+      height: 40px;
+      top: -60px;
+      animation: fall-paw linear infinite;
+      opacity: 0.7;
     }
     
-    .heart::before,
-    .heart::after {
+    .paw::before {
       content: '';
       position: absolute;
-      width: 30px;
-      height: 48px;
-      background: #ce93d8;
-      border-radius: 30px 30px 0 0;
+      width: 12px;
+      height: 16px;
+      background: #ff6b9d;
+      border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
     }
     
-    .heart::before {
-      left: 15px;
-      transform: rotate(-45deg);
-      transform-origin: 0 100%;
-    }
-    
-    .heart::after {
+    .paw::after {
+      content: '';
+      position: absolute;
+      width: 8px;
+      height: 10px;
+      background: #ff6b9d;
+      border-radius: 50%;
+      top: 0;
       left: 0;
-      transform: rotate(45deg);
-      transform-origin: 100% 100%;
     }
     
-    @keyframes fall-heart {
+    .paw-toe-1 {
+      position: absolute;
+      width: 8px;
+      height: 10px;
+      background: #ff6b9d;
+      border-radius: 50%;
+      top: 2px;
+      left: 10px;
+    }
+    
+    .paw-toe-2 {
+      position: absolute;
+      width: 8px;
+      height: 10px;
+      background: #ff6b9d;
+      border-radius: 50%;
+      top: 2px;
+      right: 10px;
+    }
+    
+    .paw-toe-3 {
+      position: absolute;
+      width: 8px;
+      height: 10px;
+      background: #ff6b9d;
+      border-radius: 50%;
+      top: 0;
+      right: 0;
+    }
+    
+    @keyframes fall-paw {
       0% {
         transform: translateY(0) rotate(0deg);
         opacity: 0;
       }
       10% {
-        opacity: 0.8;
+        opacity: 0.7;
       }
       90% {
-        opacity: 0.8;
+        opacity: 0.7;
       }
       100% {
         transform: translateY(110vh) rotate(360deg);
@@ -88,276 +109,113 @@
       }
     }
     
-    .walking-cat-container {
-      position: fixed;
-      bottom: 20%;
-      left: 0;
-      width: 100%;
-      height: 100px;
-      pointer-events: none;
-      z-index: 3;
-      overflow: hidden;
-    }
-    
-    .walking-cat {
-      position: absolute;
-      font-size: 5rem;
-      animation: walkAcross 15s linear infinite;
-      filter: drop-shadow(0 5px 10px rgba(0,0,0,0.3));
-    }
-    
-    @keyframes walkAcross {
-      0% {
-        left: -100px;
-        transform: scaleX(1);
-      }
-      48% {
-        left: calc(100% - 50px);
-        transform: scaleX(1);
-      }
-      50% {
-        left: calc(100% - 50px);
-        transform: scaleX(-1);
-      }
-      98% {
-        left: -100px;
-        transform: scaleX(-1);
-      }
-      100% {
-        left: -100px;
-        transform: scaleX(1);
-      }
-    }
-    
-    .content {
+    .container {
       position: relative;
       z-index: 100;
       width: 100%;
-      max-width: 900px;
+      max-width: 1200px;
     }
     
-    #memoryQuestion {
-      font-size: 2.5rem;
-      font-weight: 900;
-      background: linear-gradient(135deg, #ab47bc, #ce93d8, #ab47bc);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      text-align: center;
-      margin-bottom: 50px;
-      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-      animation: shimmer 3s ease-in-out infinite;
-      background-size: 200% auto;
-      line-height: 1.4;
-      padding: 30px;
-      background-color: rgba(255, 255, 255, 0.95);
+    fieldset {
+      border: 5px solid #ff1744;
       border-radius: 30px;
-      box-shadow: 0 10px 30px rgba(74, 20, 140, 0.4);
-      border: 3px solid #ce93d8;
+      padding: 40px;
+      background: rgba(255, 255, 255, 0.95);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
     }
     
-    @keyframes shimmer {
-      0% { background-position: 0% center; }
-      50% { background-position: 100% center; }
-      100% { background-position: 0% center; }
+    legend {
+      font-size: 2.2rem;
+      font-weight: bold;
+      color: #ff1744;
+      padding: 0 20px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+      animation: pulse 2s ease-in-out infinite;
     }
     
-    .options-container {
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    
+    .picture-selection {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 25px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
       margin-bottom: 40px;
     }
     
-    .option-item {
-      background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%);
-      border-radius: 25px;
-      padding: 30px 25px;
-      box-shadow: 0 8px 25px rgba(74, 20, 140, 0.3);
-      transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    .picture-item {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+      transition: all 0.3s ease;
       text-align: center;
-      border: 4px solid #ce93d8;
+      border: 3px solid transparent;
       cursor: pointer;
-      position: relative;
-      overflow: hidden;
     }
     
-    .option-item::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
+    .picture-item:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 12px 35px rgba(255, 107, 157, 0.3);
+      border-color: #ff6b9d;
+    }
+    
+    .picture-item.selected {
+      border-color: #ff1744;
+      background: rgba(255, 107, 157, 0.1);
+    }
+    
+    .picture-image {
       width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(171, 71, 188, 0.2), transparent);
-      transition: left 0.5s;
-    }
-    
-    .option-item:hover::before {
-      left: 100%;
-    }
-    
-    .option-item:hover {
-      transform: translateY(-10px) scale(1.02);
-      box-shadow: 0 15px 40px rgba(171, 71, 188, 0.5);
-      border-color: #ab47bc;
-    }
-    
-    .option-item input[type="radio"] {
-      display: none;
-    }
-    
-    .option-item input[type="radio"]:checked + label {
-      background: linear-gradient(135deg, #ab47bc, #ce93d8);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    
-    .option-item label {
-      display: block;
-      font-size: 1.4rem;
-      font-weight: 700;
-      color: #4a148c;
-      cursor: pointer;
-      padding: 15px;
-      line-height: 1.5;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-    
-    .option-emoji {
-      font-size: 3rem;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 15px;
       margin-bottom: 15px;
-      display: block;
-      animation: bounce 2s ease-in-out infinite;
+      background: #f5f5f5;
     }
     
-    .option-item:nth-child(1) .option-emoji { animation-delay: 0s; }
-    .option-item:nth-child(2) .option-emoji { animation-delay: 0.2s; }
-    .option-item:nth-child(3) .option-emoji { animation-delay: 0.4s; }
-    .option-item:nth-child(4) .option-emoji { animation-delay: 0.6s; }
-    
-    @keyframes bounce {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
+    .picture-label {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #333;
     }
     
     .button {
       display: block;
-      margin: 0 auto;
-      font-size: 1.6rem;
+      margin: 20px auto 0;
+      font-size: 1.5rem;
       font-weight: bold;
-      padding: 20px 60px;
+      padding: 15px 50px;
       border: none;
-      border-radius: 20px;
-      background: linear-gradient(135deg, #ab47bc, #ce93d8);
+      border-radius: 50px;
+      background: linear-gradient(135deg, #ff6b9d, #ff1744);
       color: white;
       cursor: pointer;
-      transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-      box-shadow: 0 8px 25px rgba(74, 20, 140, 0.4);
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      border: 4px solid #e1bee7;
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .button::after {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 0;
-      height: 0;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.4);
-      transform: translate(-50%, -50%);
-      transition: width 0.6s, height 0.6s;
-    }
-    
-    .button:hover::after {
-      width: 400px;
-      height: 400px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     }
     
     .button:hover {
-      transform: scale(1.1) translateY(-5px);
-      box-shadow: 0 12px 40px rgba(171, 71, 188, 0.6);
+      transform: scale(1.1);
+      box-shadow: 0 6px 20px rgba(255, 23, 68, 0.4);
     }
     
     .button:active {
       transform: scale(1.05);
     }
     
-    .popup-overlay {
+    .modal {
+      display: none;
       position: fixed;
-      top: 0;
+      z-index: 1000;
       left: 0;
+      top: 0;
       width: 100%;
       height: 100%;
-      background: rgba(74, 20, 140, 0.95);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 9999;
-      animation: fadeIn 0.3s ease;
-    }
-    
-    .popup-overlay.show {
-      display: flex;
-    }
-    
-    .popup-box {
-      background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%);
-      padding: 60px 70px;
-      border-radius: 40px;
-      box-shadow: 0 20px 80px rgba(0, 0, 0, 0.6);
-      text-align: center;
-      max-width: 90%;
-      animation: popIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-      border: 5px solid #ab47bc;
-      position: relative;
-    }
-    
-    .popup-emoji {
-      font-size: 5rem;
-      margin-bottom: 20px;
-      animation: heartBeat 1s ease infinite;
-    }
-    
-    .popup-message {
-      font-size: 2.5rem;
-      font-weight: 900;
-      background: linear-gradient(135deg, #ab47bc, #ce93d8);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      line-height: 1.6;
-      margin-bottom: 25px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-    
-    .popup-button {
-      background: linear-gradient(135deg, #ab47bc, #ce93d8);
-      color: white;
-      border: none;
-      padding: 18px 45px;
-      font-size: 1.3rem;
-      font-weight: bold;
-      border-radius: 50px;
-      cursor: pointer;
-      box-shadow: 0 5px 20px rgba(171, 71, 188, 0.5);
-      transition: all 0.3s ease;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-    
-    .popup-button:hover {
-      background: linear-gradient(135deg, #8e24aa, #ab47bc);
-      transform: translateY(-3px);
-      box-shadow: 0 8px 25px rgba(171, 71, 188, 0.7);
+      background-color: rgba(0, 0, 0, 0.6);
+      animation: fadeIn 0.3s;
     }
     
     @keyframes fadeIn {
@@ -365,167 +223,216 @@
       to { opacity: 1; }
     }
     
-    @keyframes popIn {
-      0% {
-        transform: scale(0.3) rotate(-180deg);
+    .modal-content {
+      background: linear-gradient(135deg, #fff 0%, #ffe4e9 100%);
+      margin: 15% auto;
+      padding: 40px;
+      border: 5px solid #ff1744;
+      border-radius: 30px;
+      width: 80%;
+      max-width: 500px;
+      text-align: center;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+      animation: slideIn 0.3s;
+      position: relative;
+    }
+    
+    @keyframes slideIn {
+      from {
+        transform: translateY(-50px);
         opacity: 0;
       }
-      100% {
-        transform: scale(1) rotate(0deg);
+      to {
+        transform: translateY(0);
         opacity: 1;
       }
     }
     
-    @keyframes heartBeat {
-      0%, 100% { transform: scale(1); }
-      25% { transform: scale(1.2); }
-      50% { transform: scale(1); }
-      75% { transform: scale(1.2); }
+    .modal-message {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: #ff1744;
+      margin-bottom: 20px;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    }
+    
+    .close-button {
+      background: linear-gradient(135deg, #ff6b9d, #ff1744);
+      color: white;
+      padding: 12px 30px;
+      border: none;
+      border-radius: 25px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .close-button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 15px rgba(255, 23, 68, 0.4);
     }
     
     @media (max-width: 768px) {
-      #memoryQuestion {
-        font-size: 1.8rem;
-        padding: 20px;
+      legend {
+        font-size: 1.4rem;
       }
       
-      .walking-cat {
-        font-size: 3.5rem;
+      fieldset {
+        padding: 25px;
       }
       
-      .options-container {
-        grid-template-columns: 1fr;
-        gap: 20px;
-      }
-      
-      .option-item label {
-        font-size: 1.1rem;
+      .picture-selection {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
       }
       
       .button {
         font-size: 1.2rem;
-        padding: 16px 40px;
+        padding: 12px 40px;
+      }
+      
+      .modal-content {
+        width: 90%;
+        padding: 30px;
+      }
+      
+      .modal-message {
+        font-size: 1.4rem;
       }
     }
   </style>
 </head>
 <body>
-  <div class="falling-hearts" id="fallingHearts"></div>
+  <div class="falling-paws" id="fallingPaws"></div>
   
-  <div class="walking-cat-container">
-    <div class="walking-cat">🐈</div>
+  <div class="container">
+    <fieldset>
+      <legend>Which one of your pictures is my favourite one's? 💕</legend>
+      <div class="picture-selection">
+        <div class="picture-item" onclick="selectPicture(1)">
+          <img src="food/an-1.jpg" alt="Picture 1" class="picture-image" />
+          <div class="picture-label">Picture 1</div>
+        </div>
+        <div class="picture-item" onclick="selectPicture(2)">
+          <img src="food/an-2.jpg" alt="Picture 2" class="picture-image" />
+          <div class="picture-label">Picture 2</div>
+        </div>
+        <div class="picture-item" onclick="selectPicture(3)">
+          <img src="food/an-3.jpg" alt="Picture 3" class="picture-image" />
+          <div class="picture-label">Picture 3</div>
+        </div>
+        <div class="picture-item" onclick="selectPicture(4)">
+          <img src="food/an-4.jpg" alt="Picture 4" class="picture-image" />
+          <div class="picture-label">Picture 4</div>
+        </div>
+        <div class="picture-item" onclick="selectPicture(5)">
+          <img src="food/an-5.jpg" alt="Picture 5" class="picture-image" />
+          <div class="picture-label">Picture 5</div>
+        </div>
+        <div class="picture-item" onclick="selectPicture(6)">
+          <img src="food/an-6.jpg" alt="Picture 6" class="picture-image" />
+          <div class="picture-label">Picture 6</div>
+        </div>
+      </div>
+      <button type="button" class="button" onclick="submitSelection()">Continue UwU</button>
+    </fieldset>
   </div>
   
-  <div class="popup-overlay" id="popupOverlay">
-    <div class="popup-box">
-      <div class="popup-emoji" id="popupEmoji">😍</div>
-      <div class="popup-message" id="popupMessage">
-        BRATHIKIPOYAV MEOW 😍
-      </div>
-      <button class="popup-button" onclick="closePopupAndContinue()">
-        Continue 💜
-      </button>
+  <div id="messageModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-message" id="modalMessage"></div>
+      <button class="close-button" onclick="closeModal()">OK</button>
     </div>
-  </div>
-  
-  <div class="content">
-    <div id="memoryQuestion">
-      <b>Do you remember the date and day<br>we met for the 1st time? 💕</b>
-    </div>
-    
-    <div class="options-container">
-      <div class="option-item" onclick="selectOption(this)">
-        <span class="option-emoji">📅</span>
-        <input type="radio" name="meetDate" value="13th January 2022 Tuesday" id="option1" />
-        <label for="option1">13th January 2022<br>Tuesday</label>
-      </div>
-      
-      <div class="option-item" onclick="selectOption(this)">
-        <span class="option-emoji">📆</span>
-        <input type="radio" name="meetDate" value="6th February 2022" id="option2" />
-        <label for="option2">6th February 2022<br>Sunday</label>
-      </div>
-      
-      <div class="option-item" onclick="selectOption(this)">
-        <span class="option-emoji">🗓️</span>
-        <input type="radio" name="meetDate" value="13th June 2022" id="option3" />
-        <label for="option3">13th June 2022<br>Monday</label>
-      </div>
-      
-      <div class="option-item" onclick="selectOption(this)">
-        <span class="option-emoji">😿</span>
-        <input type="radio" name="meetDate" value="I don't remember at all" id="option4" />
-        <label for="option4">I don't remember<br>at all 😿</label>
-      </div>
-    </div>
-    
-    <button class="button" onclick="checkAnswer()">
-      Continue 😻
-    </button>
   </div>
   
   <script>
-    const heartsContainer = document.getElementById('fallingHearts');
-    const numHearts = 40;
+    let selectedPicture = null;
     
-    for (let i = 0; i < numHearts; i++) {
-      const heart = document.createElement('div');
-      heart.className = 'heart';
+    const container = document.getElementById('fallingPaws');
+    const numPaws = 30;
+    
+    for (let i = 0; i < numPaws; i++) {
+      const paw = document.createElement('div');
+      paw.className = 'paw';
+      
+      const toe1 = document.createElement('div');
+      toe1.className = 'paw-toe-1';
+      const toe2 = document.createElement('div');
+      toe2.className = 'paw-toe-2';
+      const toe3 = document.createElement('div');
+      toe3.className = 'paw-toe-3';
+      
+      paw.appendChild(toe1);
+      paw.appendChild(toe2);
+      paw.appendChild(toe3);
       
       const leftPos = Math.random() * 100;
-      const duration = 5 + Math.random() * 5;
+      const duration = 6 + Math.random() * 6;
       const delay = Math.random() * 5;
-      const scale = 0.5 + Math.random() * 0.8;
+      const scale = 0.6 + Math.random() * 0.6;
       
-      heart.style.left = `${leftPos}%`;
-      heart.style.animationDuration = `${duration}s`;
-      heart.style.animationDelay = `${delay}s`;
-      heart.style.transform = `scale(${scale})`;
+      paw.style.left = `${leftPos}%`;
+      paw.style.animationDuration = `${duration}s`;
+      paw.style.animationDelay = `${delay}s`;
+      paw.style.transform = `scale(${scale})`;
+      paw.style.filter = `hue-rotate(${Math.random() * 30}deg)`;
       
-      heartsContainer.appendChild(heart);
+      container.appendChild(paw);
     }
     
-    function selectOption(element) {
-      document.querySelectorAll('.option-item').forEach(item => {
-        item.style.background = 'linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%)';
-        item.style.borderColor = '#ce93d8';
+    function selectPicture(num) {
+      document.querySelectorAll('.picture-item').forEach(item => {
+        item.classList.remove('selected');
       });
       
-      element.style.background = 'linear-gradient(135deg, #e1bee7 0%, #d1c4e9 100%)';
-      element.style.borderColor = '#ab47bc';
-      
-      element.querySelector('input[type="radio"]').checked = true;
+      event.currentTarget.classList.add('selected');
+      selectedPicture = num;
     }
     
-    function checkAnswer() {
-      const selectedOption = document.querySelector('input[name="meetDate"]:checked');
-      
-      if (!selectedOption) {
-        alert('Please select an answer first! 💜');
+    function submitSelection() {
+      if (selectedPicture === null) {
+        showModal("Please select a picture first! 💕");
         return;
       }
       
-      const popupOverlay = document.getElementById('popupOverlay');
-      const popupEmoji = document.getElementById('popupEmoji');
-      const popupMessage = document.getElementById('popupMessage');
+      let message = "";
       
-      if (selectedOption.id === 'option3') {
-        popupEmoji.textContent = '😍';
-        popupMessage.textContent = 'BRATHIKIPOYAV MEOW 😍';
+      if (selectedPicture === 3) {
+        message = "Good Girl 🥰💕";
+        setTimeout(() => {
+          window.location.href = 'memories.html';
+        }, 2000);
+      } else if (selectedPicture === 5) {
+        message = "NENU MARI ANTHA EDAVA LAA KANIPISTUNNANA.. OKKA MAADIRIGA KUDA LEDHA 😤";
+        setTimeout(() => {
+          window.location.href = 'memories.html';
+        }, 3000);
       } else {
-        popupEmoji.textContent = '😾';
-        popupMessage.textContent = 'HOW DARE YOU! 😾';
+        message = "YOU ARE GOING TO JAIL 🚨👮";
+        setTimeout(() => {
+          window.location.href = 'memories.html';
+        }, 2000);
       }
       
-      popupOverlay.classList.add('show');
+      showModal(message);
     }
     
-    function closePopupAndContinue() {
-      document.getElementById('popupOverlay').classList.remove('show');
-      
-      setTimeout(function() {
-        window.location.href = 'picture.html';
-      }, 300);
+    function showModal(message) {
+      document.getElementById('modalMessage').textContent = message;
+      document.getElementById('messageModal').style.display = 'block';
+    }
+    
+    function closeModal() {
+      document.getElementById('messageModal').style.display = 'none';
+      window.location.href = 'memories.html';
+    }
+    
+    window.onclick = function(event) {
+      const modal = document.getElementById('messageModal');
+      if (event.target === modal) {
+        closeModal();
+      }
     }
   </script>
 </body>
